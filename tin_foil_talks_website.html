@@ -1,0 +1,125 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+  .tft-wrap { font-family: var(--font-mono); background: #0e0e0e; color: #e8e2d6; min-height: 100vh; padding: 0; }
+  .tft-nav { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 2rem; border-bottom: 1px solid #2a2a2a; }
+  .tft-logo { font-size: 13px; letter-spacing: 0.2em; color: #e8e2d6; font-weight: 700; }
+  .tft-nav-links { display: flex; gap: 2rem; }
+  .tft-nav-links a { font-size: 11px; color: #888; letter-spacing: 0.15em; text-decoration: none; cursor: pointer; }
+  .tft-nav-links a:hover { color: #e8e2d6; }
+  .tft-hero { padding: 4rem 2rem 3rem; border-bottom: 1px solid #2a2a2a; position: relative; overflow: hidden; }
+  .tft-hero-tag { font-size: 10px; letter-spacing: 0.3em; color: #c0392b; background: rgba(192,57,43,0.12); border: 1px solid rgba(192,57,43,0.3); display: inline-block; padding: 4px 12px; margin-bottom: 1.5rem; }
+  .tft-title { font-size: clamp(3rem, 10vw, 7rem); font-weight: 700; line-height: 0.9; letter-spacing: -0.02em; margin: 0 0 1.5rem; color: #f0ebe0; }
+  .tft-title span { color: #c0392b; }
+  .tft-desc { font-size: 13px; line-height: 1.8; color: #999; max-width: 500px; margin-bottom: 2rem; }
+  .tft-desc strong { color: #e8e2d6; font-weight: 700; }
+  .tft-cta { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: 0.2em; color: #c0392b; border: 1px solid #c0392b; padding: 10px 20px; cursor: pointer; }
+  .tft-cta:hover { background: rgba(192,57,43,0.1); }
+  .tft-stamp { position: absolute; right: 2rem; top: 3rem; width: 110px; height: 110px; border: 3px solid rgba(192,57,43,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; transform: rotate(-12deg); opacity: 0.6; }
+  .tft-stamp-inner { text-align: center; font-size: 9px; letter-spacing: 0.15em; color: #c0392b; line-height: 1.6; font-weight: 700; }
+  .tft-section { padding: 3rem 2rem; border-bottom: 1px solid #2a2a2a; }
+  .tft-section-label { font-size: 10px; letter-spacing: 0.3em; color: #555; margin-bottom: 2rem; display: flex; align-items: center; gap: 12px; }
+  .tft-section-label::after { content: ''; flex: 1; height: 1px; background: #2a2a2a; }
+  .tft-episode { display: grid; grid-template-columns: 80px 1fr; gap: 1.5rem; align-items: start; padding: 1.5rem; border: 1px solid #2a2a2a; margin-bottom: 1rem; cursor: pointer; transition: border-color 0.2s; }
+  .tft-episode:hover { border-color: #444; }
+  .tft-ep-num { font-size: 2.5rem; font-weight: 700; color: #2a2a2a; line-height: 1; }
+  .tft-ep-tag { font-size: 9px; letter-spacing: 0.2em; color: #c0392b; margin-bottom: 6px; }
+  .tft-ep-title { font-size: 15px; font-weight: 700; color: #f0ebe0; margin-bottom: 6px; line-height: 1.3; }
+  .tft-ep-desc { font-size: 11px; color: #666; line-height: 1.7; }
+  .tft-ep-meta { font-size: 10px; color: #444; margin-top: 10px; letter-spacing: 0.1em; }
+  .tft-coming { opacity: 0.4; }
+  .tft-hosts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .tft-host { padding: 1.5rem; border: 1px solid #2a2a2a; }
+  .tft-host-avatar { width: 48px; height: 48px; border-radius: 50%; background: #1a1a1a; border: 1px solid #2a2a2a; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; color: #888; margin-bottom: 1rem; }
+  .tft-host-name { font-size: 13px; font-weight: 700; color: #f0ebe0; margin-bottom: 4px; }
+  .tft-host-role { font-size: 10px; color: #c0392b; letter-spacing: 0.15em; margin-bottom: 8px; }
+  .tft-host-bio { font-size: 11px; color: #666; line-height: 1.6; }
+  .tft-footer { padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+  .tft-footer-text { font-size: 10px; color: #444; letter-spacing: 0.1em; }
+  .tft-ticker { background: #c0392b; padding: 6px 0; overflow: hidden; white-space: nowrap; }
+  .tft-ticker-inner { display: inline-block; animation: ticker 20s linear infinite; font-size: 10px; letter-spacing: 0.2em; color: #fff; }
+  @keyframes ticker { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
+  .tft-new-badge { display: inline-block; font-size: 9px; background: #c0392b; color: #fff; padding: 2px 6px; letter-spacing: 0.1em; margin-left: 8px; vertical-align: middle; }
+</style>
+<div class="tft-wrap">
+  <div class="tft-ticker">
+    <span class="tft-ticker-inner">NEW EPISODE OUT NOW — 9/11 CONSPIRACY THEORIES &nbsp;&nbsp;&nbsp;/// &nbsp;&nbsp;&nbsp; SEASON 1, EPISODE 3 &nbsp;&nbsp;&nbsp;/// &nbsp;&nbsp;&nbsp; SUBSCRIBE WHEREVER YOU LISTEN &nbsp;&nbsp;&nbsp;/// &nbsp;&nbsp;&nbsp; THE TRUTH IS OUT THERE &nbsp;&nbsp;&nbsp;/// &nbsp;&nbsp;&nbsp;</span>
+  </div>
+  <nav class="tft-nav">
+    <div class="tft-logo">TIN FOIL TALKS</div>
+    <div class="tft-nav-links">
+      <a>Episodes</a>
+      <a>Hosts</a>
+      <a>About</a>
+      <a>Subscribe</a>
+    </div>
+  </nav>
+  <div class="tft-hero">
+    <div class="tft-stamp">
+      <div class="tft-stamp-inner">SEASON<br>ONE<br>2026</div>
+    </div>
+    <div class="tft-hero-tag">PODCAST</div>
+    <h1 class="tft-title">TIN<br>FOIL<br><span>TALKS</span></h1>
+    <p class="tft-desc">
+      A podcast where <strong>Ben, Carl & Ilay</strong> dig into the world's biggest conspiracy theories — so you don't have to go down the rabbit hole alone.
+    </p>
+    <div class="tft-cta">▶ &nbsp; LISTEN NOW</div>
+  </div>
+  <div class="tft-section">
+    <div class="tft-section-label">EPISODES</div>
+    <div class="tft-episode">
+      <div class="tft-ep-num">03</div>
+      <div>
+        <div class="tft-ep-tag">LATEST <span class="tft-new-badge">NEW</span></div>
+        <div class="tft-ep-title">9/11 Conspiracy Theories</div>
+        <div class="tft-ep-desc">Four planes. Three thousand lives. And 25 years later, the internet still can't agree on what really happened. We break down the biggest theories — from controlled demolition to Building 7 — and follow the evidence.</div>
+        <div class="tft-ep-meta">BEN · CARL · ILAY &nbsp;|&nbsp; ~13 MIN</div>
+      </div>
+    </div>
+    <div class="tft-episode tft-coming">
+      <div class="tft-ep-num">02</div>
+      <div>
+        <div class="tft-ep-tag">PREVIOUS</div>
+        <div class="tft-ep-title">The Moon Landing</div>
+        <div class="tft-ep-desc">Did we actually go? The flags, the footage, and why people are still asking questions.</div>
+        <div class="tft-ep-meta">BEN · CARL · ILAY &nbsp;|&nbsp; ~11 MIN</div>
+      </div>
+    </div>
+    <div class="tft-episode tft-coming">
+      <div class="tft-ep-num">01</div>
+      <div>
+        <div class="tft-ep-tag">PILOT</div>
+        <div class="tft-ep-title">Flat Earth</div>
+        <div class="tft-ep-desc">We had to start somewhere. The theory that refuses to die — and the community behind it.</div>
+        <div class="tft-ep-meta">BEN · CARL · ILAY &nbsp;|&nbsp; ~10 MIN</div>
+      </div>
+    </div>
+  </div>
+  <div class="tft-section">
+    <div class="tft-section-label">THE HOSTS</div>
+    <div class="tft-hosts">
+      <div class="tft-host">
+        <div class="tft-host-avatar">B</div>
+        <div class="tft-host-name">Ben</div>
+        <div class="tft-host-role">THE FACT-CHECKER</div>
+        <div class="tft-host-bio">Knows his stuff, keeps things grounded. If there's evidence, Ben's found it.</div>
+      </div>
+      <div class="tft-host">
+        <div class="tft-host-avatar">C</div>
+        <div class="tft-host-name">Carl</div>
+        <div class="tft-host-role">THE SKEPTIC</div>
+        <div class="tft-host-bio">Asks the questions everyone's thinking. Represents every person who's new to this stuff.</div>
+      </div>
+      <div class="tft-host">
+        <div class="tft-host-avatar">I</div>
+        <div class="tft-host-name">Ilay</div>
+        <div class="tft-host-role">THE BELIEVER</div>
+        <div class="tft-host-bio">Has definitely been down a 2am YouTube rabbit hole or twelve. Brings the theories.</div>
+      </div>
+    </div>
+  </div>
+  <div class="tft-footer">
+    <div class="tft-footer-text">© 2026 TIN FOIL TALKS</div>
+    <div class="tft-footer-text">STAY CURIOUS. STAY CRITICAL.</div>
+  </div>
+</div>

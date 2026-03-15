@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tin Foil Talks</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Space Mono', monospace; background: #0e0e0e; color: #e8e2d6; min-height: 100vh; }
+  .tft-nav { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 2rem; border-bottom: 1px solid #2a2a2a; }
+  .tft-logo { font-size: 13px; letter-spacing: 0.2em; color: #e8e2d6; font-weight: 700; }
+  .tft-nav-links { display: flex; gap: 2rem; }
+  .tft-nav-links a { font-size: 11px; color: #888; letter-spacing: 0.15em; text-decoration: none; }
+  .tft-nav-links a:hover { color: #e8e2d6; }
+  .tft-ticker { background: #c0392b; padding: 6px 0; overflow: hidden; white-space: nowrap; }
+  .tft-ticker-inner { display: inline-block; animation: ticker 20s linear infinite; font-size: 10px; letter-spacing: 0.2em; color: #fff; }
+  @keyframes ticker { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
+  .tft-hero { padding: 4rem 2rem 3rem; border-bottom: 1px solid #2a2a2a; position: relative; overflow: hidden; }
+  .tft-hero-tag { font-size: 10px; letter-spacing: 0.3em; color: #c0392b; background: rgba(192,57,43,0.12); border: 1px solid rgba(192,57,43,0.3); display: inline-block; padding: 4px 12px; margin-bottom: 1.5rem; }
+  .tft-title { font-size: clamp(3rem, 10vw, 7rem); font-weight: 700; line-height: 0.9; letter-spacing: -0.02em; margin: 0 0 1.5rem; color: #f0ebe0; }
+  .tft-title span { color: #c0392b; }
+  .tft-desc { font-size: 13px; line-height: 1.8; color: #999; max-width: 500px; margin-bottom: 2rem; }
+  .tft-desc strong { color: #e8e2d6; }
+  .tft-cta { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: 0.2em; color: #c0392b; border: 1px solid #c0392b; padding: 10px 20px; cursor: pointer; background: none; font-family: 'Space Mono', monospace; }
+  .tft-cta:hover { background: rgba(192,57,43,0.1); }
+  .tft-stamp { position: absolute; right: 2rem; top: 3rem; width: 110px; height: 110px; border: 3px solid rgba(192,57,43,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; transform: rotate(-12deg); opacity: 0.6; }
+  .tft-stamp-inner { text-align: center; font-size: 9px; letter-spacing: 0.15em; color: #c0392b; line-height: 1.6; font-weight: 700; }
+  .tft-player { display: none; margin-top: 1.5rem; background: #1a1a1a; border: 1px solid #2a2a2a; padding: 1.2rem 1.5rem; max-width: 500px; }
+  .tft-player.visible { display: block; }
+  .tft-player-title { font-size: 10px; letter-spacing: 0.2em; color: #555; margin-bottom: 10px; }
+  .tft-player-controls { display: flex; align-items: center; gap: 12px; }
+  .tft-play-btn { width: 36px; height: 36px; border-radius: 50%; background: #c0392b; border: none; color: #fff; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .tft-play-btn:hover { background: #e74c3c; }
+  .tft-progress-wrap { flex: 1; }
+  .tft-progress { width: 100%; height: 3px; background: #2a2a2a; border-radius: 2px; cursor: pointer; appearance: none; -webkit-appearance: none; }
+  .tft-progress::-webkit-slider-thumb { appearance: none; width: 10px; height: 10px; border-radius: 50%; background: #c0392b; cursor: pointer; }
+  .tft-time { font-size: 10px; color: #555; margin-top: 5px; letter-spacing: 0.1em; }
+  .tft-section { padding: 3rem 2rem; border-bottom: 1px solid #2a2a2a; }
+  .tft-section-label { font-size: 10px; letter-spacing: 0.3em; color: #555; margin-bottom: 2rem; display: flex; align-items: center; gap: 12px; }
+  .tft-section-label::after { content: ''; flex: 1; height: 1px; background: #2a2a2a; }
+
+  /* Episode accordion */
+  .tft-episode { border: 1px solid #2a2a2a; margin-bottom: 1rem; }
+  .tft-episode-header { display: grid; grid-template-columns: 80px 1fr 24px; gap: 1.5rem; align-items: center; padding: 1.5rem; cursor: pointer; }
+  .tft-episode-header:hover { background: #141414; }
+  .tft-ep-num { font-size: 2.5rem; font-weight: 700; color: #2a2a2a; line-height: 1; }
+  .tft-ep-tag { font-size: 9px; letter-spacing: 0.2em; color: #c0392b; margin-bottom: 6px; }
+  .tft-ep-title { font-size: 15px; font-weight: 700; color: #f0ebe0; margin-bottom: 4px; }
+  .tft-ep-meta { font-size: 10px; color: #444; letter-spacing: 0.1em; }
+  .tft-arrow { font-size: 11px; color: #555; transition: transform 0.3s; user-select: none; text-align: center; }
+  .tft-episode.open .tft-arrow { transform: rotate(180deg); }
+  .tft-episode-body { display: none; padding: 0 1.5rem 1.5rem; border-top: 1px solid #1e1e1e; }
+  .tft-episode.open .tft-episode-body { display: block; }
+  .tft-ep-desc-full { font-size: 11px; color: #666; line-height: 1.8; margin-top: 1rem; }
+  .tft-ep-topics { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 6px; }
+  .tft-topic { font-size: 9px; letter-spacing: 0.15em; color: #555; border: 1px solid #2a2a2a; padding: 3px 10px; }
+  .tft-coming .tft-episode-header { opacity: 0.4; cursor: default; }
+
+  /* Hosts */
+  .tft-hosts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .tft-host { padding: 1.5rem; border: 1px solid #2a2a2a; }
+  .tft-host-avatar { width: 48px; height: 48px; border-radius: 50%; background: #1a1a1a; border: 1px solid #2a2a2a; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; color: #888; margin-bottom: 1rem; }
+  .tft-host-name { font-size: 13px; font-weight: 700; color: #f0ebe0; margin-bottom: 4px; }
+  .tft-host-role { font-size: 10px; color: #c0392b; letter-spacing: 0.15em; margin-bottom: 8px; }
+  .tft-host-bio { font-size: 11px; color: #666; line-height: 1.6; }
+  .tft-new-badge { display: inline-block; font-size: 9px; background: #c0392b; color: #fff; padding: 2px 6px; letter-spacing: 0.1em; margin-left: 8px; vertical-align: middle; }
+
+
+
+  .tft-footer { padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+  .tft-footer-text { font-size: 10px; color: #444; letter-spacing: 0.1em; }
+</style>
+</head>
+<body>
+
+<div class="tft-ticker">
+  <span class="tft-ticker-inner">NEW EPISODE OUT NOW — 9/11 CONSPIRACY THEORIES &nbsp;&nbsp;&nbsp;/// &nbsp;&nbsp;&nbsp; SEASON 1, EPISODE 3 &nbsp;&nbsp;&nbsp;/// &nbsp;&nbsp;&nbsp; SUBSCRIBE WHEREVER YOU LISTEN &nbsp;&nbsp;&nbsp;/// &nbsp;&nbsp;&nbsp; THE TRUTH IS OUT THERE &nbsp;&nbsp;&nbsp;/// &nbsp;&nbsp;&nbsp;</span>
+</div>
+
+<nav class="tft-nav">
+  <div class="tft-logo">TIN FOIL TALKS</div>
+  <div class="tft-nav-links">
+    <a href="#episodes">Episodes</a>
+    <a href="#hosts">Hosts</a>
+
+  </div>
+</nav>
+
+<div class="tft-hero">
+  <div class="tft-stamp"><div class="tft-stamp-inner">SEASON<br>ONE<br>2026</div></div>
+  <div class="tft-hero-tag">PODCAST</div>
+  <h1 class="tft-title">TIN<br>FOIL<br><span>TALKS</span></h1>
+  <p class="tft-desc">A podcast where <strong>Ben, Carl & Ilay</strong> dig into the world's biggest conspiracy theories — so you don't have to go down the rabbit hole alone.</p>
+  <button class="tft-cta" onclick="togglePlayer()">&#9654; &nbsp; <span id="cta-text">LISTEN NOW</span></button>
+  <div class="tft-player" id="player">
+    <div class="tft-player-title">EP. 03 — 9/11 CONSPIRACY THEORIES</div>
+    <audio id="audio" src="podcast.mp3" preload="metadata"></audio>
+    <div class="tft-player-controls">
+      <button class="tft-play-btn" id="play-btn" onclick="togglePlay()">&#9654;</button>
+      <div class="tft-progress-wrap">
+        <input type="range" class="tft-progress" id="progress" value="0" min="0" step="0.1">
+        <div class="tft-time" id="time-display">0:00 / 0:00</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tft-section" id="episodes">
+  <div class="tft-section-label">EPISODES</div>
+
+  <div class="tft-episode" id="ep03">
+    <div class="tft-episode-header" onclick="toggleEp('ep03')">
+      <div class="tft-ep-num">03</div>
+      <div>
+        <div class="tft-ep-tag">LATEST <span class="tft-new-badge">NEW</span></div>
+        <div class="tft-ep-title">9/11 Conspiracy Theories</div>
+        <div class="tft-ep-meta">BEN · CARL · ILAY &nbsp;|&nbsp; ~13 MIN</div>
+      </div>
+      <div class="tft-arrow">&#9660;</div>
+    </div>
+    <div class="tft-episode-body">
+      <p class="tft-ep-desc-full">Four planes. Three thousand lives. And 25 years later, the internet still can't agree on what really happened. We go through the biggest theories — controlled demolition, Building 7, the Pentagon missile theory, and the inside job claim — and follow the actual evidence.</p>
+      <div class="tft-ep-topics">
+        <span class="tft-topic">CONTROLLED DEMOLITION</span>
+        <span class="tft-topic">BUILDING 7</span>
+        <span class="tft-topic">PENTAGON MISSILE</span>
+        <span class="tft-topic">INSIDE JOB</span>
+        <span class="tft-topic">CIA WARNINGS</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tft-episode tft-coming" id="ep02">
+    <div class="tft-episode-header">
+      <div class="tft-ep-num">02</div>
+      <div>
+        <div class="tft-ep-tag">PREVIOUS</div>
+        <div class="tft-ep-title">The Moon Landing</div>
+        <div class="tft-ep-meta">BEN · CARL · ILAY &nbsp;|&nbsp; ~11 MIN</div>
+      </div>
+      <div class="tft-arrow">&#9660;</div>
+    </div>
+  </div>
+
+  <div class="tft-episode tft-coming" id="ep01">
+    <div class="tft-episode-header">
+      <div class="tft-ep-num">01</div>
+      <div>
+        <div class="tft-ep-tag">PILOT</div>
+        <div class="tft-ep-title">Flat Earth</div>
+        <div class="tft-ep-meta">BEN · CARL · ILAY &nbsp;|&nbsp; ~10 MIN</div>
+      </div>
+      <div class="tft-arrow">&#9660;</div>
+    </div>
+  </div>
+</div>
+
+<div class="tft-section" id="hosts">
+  <div class="tft-section-label">THE HOSTS</div>
+  <div class="tft-hosts">
+    <div class="tft-host">
+      <div class="tft-host-avatar">B</div>
+      <div class="tft-host-name">Ben</div>
+      <div class="tft-host-role">THE FACT-CHECKER</div>
+      <div class="tft-host-bio">Knows his stuff, keeps things grounded. If there's evidence, Ben's found it.</div>
+    </div>
+    <div class="tft-host">
+      <div class="tft-host-avatar">C</div>
+      <div class="tft-host-name">Carl</div>
+      <div class="tft-host-role">THE SKEPTIC</div>
+      <div class="tft-host-bio">Asks the questions everyone's thinking. Represents every person who's new to this stuff.</div>
+    </div>
+    <div class="tft-host">
+      <div class="tft-host-avatar">I</div>
+      <div class="tft-host-name">Ilay</div>
+      <div class="tft-host-role">THE BELIEVER</div>
+      <div class="tft-host-bio">Has definitely been down a 2am YouTube rabbit hole or twelve. Brings the theories.</div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="tft-footer">
+  <div class="tft-footer-text">© 2026 TIN FOIL TALKS</div>
+  <div class="tft-footer-text">STAY CURIOUS. STAY CRITICAL.</div>
+</div>
+
+<script>
+  const audio = document.getElementById('audio');
+  const playBtn = document.getElementById('play-btn');
+  const progress = document.getElementById('progress');
+  const timeDisplay = document.getElementById('time-display');
+
+  function togglePlayer() {
+    const player = document.getElementById('player');
+    player.classList.toggle('visible');
+    if (player.classList.contains('visible')) {
+      audio.play();
+      playBtn.innerHTML = '&#9646;&#9646;';
+      document.getElementById('cta-text').innerText = 'NOW PLAYING';
+    }
+  }
+
+  function togglePlay() {
+    if (audio.paused) { audio.play(); playBtn.innerHTML = '&#9646;&#9646;'; }
+    else { audio.pause(); playBtn.innerHTML = '&#9654;'; }
+  }
+
+  function formatTime(s) {
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60);
+    return m + ':' + (sec < 10 ? '0' : '') + sec;
+  }
+
+  audio.addEventListener('timeupdate', () => {
+    if (audio.duration) {
+      progress.max = audio.duration;
+      progress.value = audio.currentTime;
+      timeDisplay.innerText = formatTime(audio.currentTime) + ' / ' + formatTime(audio.duration);
+    }
+  });
+
+  progress.addEventListener('input', () => { audio.currentTime = progress.value; });
+  audio.addEventListener('ended', () => { playBtn.innerHTML = '&#9654;'; });
+
+  function toggleEp(id) {
+    const ep = document.getElementById(id);
+    if (ep.classList.contains('tft-coming')) return;
+    ep.classList.toggle('open');
+  }
+
+
+</script>
+</body>
+</html>
